@@ -24,6 +24,7 @@ class FunctionError(CustomError):
 
     def __str__(self):
         return f'Error while trying to {self.action} ({str(self.error.__class__)[8:-2]}: {self.error.args[1]})'
+    # TODO troubleshoot this code, as sometimes it returns <str exception failed>
 
 
 class DatabaseCreationError(FunctionError):
@@ -52,6 +53,10 @@ class SqlOutputError(FunctionError):
 
 class SqlExportError(FunctionError):
     action = 'export values to Excel'
+
+
+class CustomInquiryError(FunctionError):
+    action = 'execute custom inquiry'
 
 
 class ColumnNumberError(CustomError):
@@ -92,6 +97,24 @@ def check_filename(name):
     return True
 
 
+def custom_inquiry(database_name, inquiry, password='root'):
+    try:
+        connection = pymysql.connect(host='localhost',
+                                     user='root',
+                                     password=password,
+                                     db=database_name,
+                                     charset='utf8mb4',
+                                     cursorclass=pymysql.cursors.DictCursor)
+        cursor = connection.cursor()
+        sql = inquiry
+        cursor.execute(sql)
+        connection.commit()
+        connection.close()
+        return cursor.fetchall()
+    except Exception as er:
+        raise CustomInquiryError(er)
+
+
 def create_db(database_name, password='root'):
     try:
         connection = pymysql.connect(host='localhost',
@@ -125,7 +148,7 @@ def delete_db(database_name, password='root'):
         raise DatabaseDeletionError(er)
 
 
-def create_table(database_name, table_name, table_format=None, password='root'):
+def simple_create_table(database_name, table_name, table_format=None, auto_increment_column_name=None, password='root'):
     try:
         connection = pymysql.connect(host='localhost',
                                      user='root',
@@ -138,7 +161,9 @@ def create_table(database_name, table_name, table_format=None, password='root'):
 
         if table_format:
             cursor = connection.cursor()
-            sql_gen = ', '.join([' '.join(table_format[i]) for i in range(len(table_format))])
+            if auto_increment_column_name:
+                table_format.insert(0, (auto_increment_column_name, 'INT PRIMARY KEY AUTO_INCREMENT'))
+            sql_gen = ', '.join([' '.join(table_format[i][:2]) for i in range(len(table_format))])
             sql = f'CREATE TABLE {table_name} ({sql_gen})'
             cursor.execute(sql)
             connection.commit()
@@ -289,21 +314,8 @@ def formated_print(rows):
         megalist.append(val)
     print(tabulate(megalist, headers=headers))
 
+# TODO create UPDATE func table_format -> columns (idk how to make it atm)
+
 
 if __name__ == '__main__':
-    Table_format = [('input', 'INT'), ('result', 'INT')]
-    Values = [(11, 12), (13, 14)]
-    dn = 'test'
-    tn = 'test1'
-    try:
-        pass
-        # create_db(dn)
-        # create_table(dn, tn, Table_format)
-        # sql_input(dn, tn, Table_format, Values)
-        # print(sql_output(dn, tn))
-        # excel_export(dn, tn, 'absolutest')
-
-    finally:
-        pass
-        # delete_table(dn, tn)
-        # delete_db(dn)
+    pass
