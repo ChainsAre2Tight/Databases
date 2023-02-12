@@ -1,9 +1,17 @@
 import gui
 
-window = gui.MainWindow("Приложение 'Базы данных' (задача 18)")
-window.variables.input_window_class_name = 'InputWindow'
-window.variables.input_window_name = 'Ввод данных для задачи 18'
 
-window.variables.data_format = [('num', 'INT', 'enter num'), ('type', 'VARCHAR(50)', 'enter object type')]
+def algorith(row):
+    return row
 
-window.root.mainloop()
+
+def set_variables(current_window):
+    current_window.root.title("Приложение 'Базы данных' (задача 18)")
+    current_window.children.input_window_name = 'Ввод данных для задачи 18'
+    current_window.variables.algorithm = algorith
+    current_window.variables.data_format = [('date_of_delivery', 'VARCHAR(50)', 'Введите дату ввоза'),
+                                            ('department', 'VARCHAR(50)', 'Введите отдел'),
+                                            ('type', 'VARCHAR(50)', 'Введите тип мебели'),
+                                            ('price', 'VARCHAR(50)', 'Введите цену мебели')]
+
+

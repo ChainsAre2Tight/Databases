@@ -1,0 +1,3 @@
+Zadacha18:test:table1
+ZadachaTest:test:table2
+Zadacha18:lox:tablelox1
