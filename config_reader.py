@@ -18,10 +18,16 @@ class DatabaseConfig:
             self.config_name = name
         self.path = os.path.join(os.path.dirname(__file__), 'config')
         self.file_name = os.path.join(self.path, self.config_name)
+        try:
+            with open(self.file_name):
+                pass
+        except FileNotFoundError:
+            with open(self.file_name, 'w'):
+                pass
 
     def read(self) -> dict:
         """
-        This function reads config and returns all preset-database-table relatonships
+        This function reads config and returns all preset-database-table relationships
         :return: dict[preset][database] = [table]
         """
         with open(self.file_name) as file:
@@ -95,6 +101,5 @@ class DatabaseConfig:
 
 
 if __name__ == '__main__':
-    print(DatabaseConfig().delete('ZadachaTest', 'lox'))
     print(DatabaseConfig().read())
     pass
