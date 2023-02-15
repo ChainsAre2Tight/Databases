@@ -25,7 +25,7 @@ class Window:
         self.root = Tk()
         self.root.title(name_window)
 
-
+# TODO replace tabulate with pandas.pivot_table
 class MainWindowChildren:
     """Object of this class stores child objects for an instance of MainWindow"""
 
