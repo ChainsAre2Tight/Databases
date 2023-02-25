@@ -1,0 +1,25 @@
+import numpy as np
+
+
+class MATRIX():
+    def __init__(self, info):
+        self.rows = info[0]
+        self.columns = info[1]
+        self.values = iter(info[2:])
+
+    def create(self):
+        name = []
+        for x in range(0, self.rows):
+            name.append([i for i in range(self.columns)])
+        for x in range(0, self.rows):
+            for y in range(0, self.columns):
+                name[x][y] = next(self.values)
+        return name
+
+
+matr1 = np.array(MATRIX.create(MATRIX(list(map(int, input().split(' '))))))
+matr2 = np.array(MATRIX.create(MATRIX(list(map(int, input().split(' '))))))
+total = matr1.dot(matr2)
+it_matr = []
+for x in total:
+    it_matr.append(list(x))
