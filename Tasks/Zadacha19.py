@@ -20,9 +20,10 @@ class MATRIX:
 def algorith(row):
     matr1 = np.array(MATRIX.create(MATRIX(list(map(int, row['M1'].split(' '))))))
     matr2 = np.array(MATRIX.create(MATRIX(list(map(int, row['M2'].split(' '))))))
-    row['M3'] = matr1.dot(matr2)
-    row['M1'] = matr1
-    row['M2'] = matr2
+    matr3 = matr1.dot(matr2)
+    row['M3'] = str(matr3)[1:-1]
+    row['M1'] = str(matr1)[1:-1]
+    row['M2'] = str(matr2)[1:-1]
     return row
 
 
