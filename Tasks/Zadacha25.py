@@ -19,8 +19,8 @@ def algorith(row):
 
 
 def set_variables(current_window):
-    current_window.root.title("Приложение 'Базы данных' (задача 24)")
-    current_window.children.input_window_name = 'Ввод данных для задачи 24'
+    current_window.root.title("Приложение 'Базы данных' (задача 25)")
+    current_window.children.input_window_name = 'Ввод данных для задачи 25'
     current_window.variables.algorithm = algorith
     current_window.variables.data_format = [
         ('Massive', 'TEXT', 'Введите список'),

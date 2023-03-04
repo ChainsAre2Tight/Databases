@@ -1,1 +1,3 @@
 Zadacha18:test:table1
+Zadacha18:ad18:table5
+Zadacha19:test:zd19

@@ -27,62 +27,61 @@ class Window:
 
 
 # TODO replace tabulate with pandas.pivot_table
-class MainWindowChildren:
-    """Object of this class stores child objects for an instance of MainWindow"""
-
-    def __init__(self):
-        self.input_window = None  # instance of InputWindow class
-        self.input_window_open = False  # is True when input window is open
-        self.output_window = None  # instance of OutputWindow class
-        self.output_window_open = False  # is True when output window is open
-
-
-class MainWindowVariables:
-    """Object of this class stores variables for an instance of MainWindow"""
-
-    def __init__(self):
-        self.name_preset = str()  # name of currently selected preset
-        self.name_database = str()  # name of currently selected database
-        self.name_table = str()  # name of currently selected table
-        self.data_format = tuple()  # proprietary format for use in sql_function module, see ZadachaTest.py for info
-        self.input_window_name = str()  # name of input window
-        self.padx = 100  # padx for use in tkinter.pack()
-        self.pady = 1  # padx for use in tkinter.pack()
-        self.increment_column_name = 'id'  # determines the first column name, that is AUTO_INCREMENTed
-        self.algorithm = default_function  # stores function, that is used to aggregate each inputed row
-        self.list_of_databases = []  # stores list of all databases used with current preset, see update_comboboxes()
-        self.list_of_tables = []  # stores list of all tables used with current databases, see update_comboboxes()
-        self.theme = 'clam'  # determines theme for widgets
-
-
-class MainWindowWidgets:
-    """Object of this class stores widgets of an instance of MainWindow"""
-
-    def __init__(self):
-        self.dbname_entry_label = None
-        self.dbname_button = None  # button that confirms database selection
-        self.tname_entry_label = None
-        self.tname_button = None  # button that confirms table selection
-        self.create_database_button = None
-        self.create_table_button = None
-        self.open_input_window_button = None
-        self.export_button = None
-        self.button_close_window = None
-        self.button_open_output_window = None
-        self.dbname_entry_combobox = None
-        self.tname_entry_combobox = None
 
 
 # noinspection PyTypeChecker
 class MainWindow(Window):
+    class MainWindowChildren:
+        """Object of this class stores child objects for an instance of MainWindow"""
+
+        def __init__(self):
+            self.input_window = None  # instance of InputWindow class
+            self.input_window_open = False  # is True when input window is open
+            self.output_window = None  # instance of OutputWindow class
+            self.output_window_open = False  # is True when output window is open
+
+    class MainWindowWidgets:
+        """Object of this class stores widgets of an instance of MainWindow"""
+
+        def __init__(self):
+            self.dbname_entry_label = None
+            self.dbname_button = None  # button that confirms database selection
+            self.tname_entry_label = None
+            self.tname_button = None  # button that confirms table selection
+            self.create_database_button = None
+            self.create_table_button = None
+            self.open_input_window_button = None
+            self.export_button = None
+            self.button_close_window = None
+            self.button_open_output_window = None
+            self.dbname_entry_combobox = None
+            self.tname_entry_combobox = None
+
+    class MainWindowVariables:
+        """Object of this class stores variables for an instance of MainWindow"""
+
+        def __init__(self):
+            self.name_preset = str()  # name of currently selected preset
+            self.name_database = str()  # name of currently selected database
+            self.name_table = str()  # name of currently selected table
+            self.data_format = tuple()  # proprietary format for use in sql_function module, see ZadachaTest.py for info
+            self.input_window_name = str()  # name of input window
+            self.padx = 100  # padx for use in tkinter.pack()
+            self.pady = 1  # padx for use in tkinter.pack()
+            self.increment_column_name = 'id'  # determines the first column name, that is AUTO_INCREMENTed
+            self.algorithm = default_function  # stores function, that is used to aggregate each inputed row
+            self.list_of_databases = []  # stores list of all databases used with current preset, see update_comboboxes()
+            self.list_of_tables = []  # stores list of all tables used with current databases, see update_comboboxes()
+            self.theme = 'clam'  # determines theme for widgets
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.root.resizable(False, False)
 
-        self.variables = MainWindowVariables()
-        self.children = MainWindowChildren()
-        self.widgets = MainWindowWidgets()
+        self.variables = MainWindow.MainWindowVariables()
+        self.children = MainWindow.MainWindowChildren()
+        self.widgets = MainWindow.MainWindowWidgets()
 
         self.initialize_widgets()
         self.config = config_reader.DatabaseConfig()
@@ -167,13 +166,13 @@ class MainWindow(Window):
         self.variables.name_database = self.widgets.dbname_entry_combobox.get()
         self.update_comboboxes()
         messagebox.showinfo(message=f'''Название базы данных внесено
-(Выбранная база данных: '{self.variables.name_database}')''')
+(Выбраная база данных: '{self.variables.name_database}')''')
         return
 
     def create_database(self):
         """
         This method creates a new database using create_db function of sql_functions module
-        Then it displays a pop-up window with a list of all databases on that server
+        Then it dispalys a pop-up window with a list of all databases on that server
 
         As create_db raises sql_function.DatabaseCreationError, try-except module uses it to determine if an error
         occured in create_db or in this function and then an error message is displayed accordingly
@@ -205,10 +204,10 @@ class MainWindow(Window):
     def create_table(self):
         """
         This method creates a new table using simple_create_table function of sql_functions module
-        Then it displays a pop-up window with a list of all tables within that database
+        Then it dispalys a pop-up window with a list of all tables within that database
 
-        As simple_create_table raises sql_function.TableCreationError, try-except module uses it to determine if an
-        error occured in create_db or in this function and then an error message is displayed accordingly
+        As simple_create_table raises sql_function.TableCreationError, try-except module uses it to determine if an error
+        occured in create_db or in this function and then an error message is displayed accordingly
         """
         try:
             sql_functions.simple_create_table(self.variables.name_database,
@@ -233,8 +232,7 @@ class MainWindow(Window):
 
     def add_to_config(self):
         """
-        This method adds to config currently selected relationship preset-database-table using .write method of
-        Database_config class of config_reader module
+        This method adds to config currently selected relationship preset-database-table using .write method of Database_config class of config_reader module
         Than it displays a pop-up window displaying either a warning or a success message
         """
         answer = messagebox.askokcancel("Сохранить", "Вы хотите сохранить текущую конфигурацию?")
@@ -255,8 +253,7 @@ class MainWindow(Window):
 
     def remove_from_config(self):
         """
-        This method removes currently selected relationship preset-database-table from config using .delete method of
-        Database_config class of config_reader module
+        This method removes currently selected relationship preset-database-table from config using .delete method of Database_config class of config_reader module
         Than it displays a pop-up window displaying either a warning or a success message
         """
         answer = messagebox.askokcancel("Сохранить", "Вы хотите удалить текущую конфигурацию?")
@@ -292,7 +289,7 @@ class MainWindow(Window):
         """Defines actions that are performed when input window is closed"""
         self.children.input_window_open = False  # sets flag to False
         self.children.input_window.root.destroy()  # destroys window
-        self.children.input_window = None  # destroys object
+        self.children.input_window = None  # destoys object
         self.root.deiconify()  # unhides the main window
         return
 
@@ -300,13 +297,13 @@ class MainWindow(Window):
         """Defines a series of actions that are performed when an output window must be opened"""
         if not self.children.output_window_open:  # checks if another output window is opened
             self.children.output_window = OutputWindow(
-                self.variables.name_table)  # creates an instance of OutputWindow class
+                self.variables.name_table)  # creates an instance of OuptupWindow class
             self.children.output_window.root.protocol("WM_DELETE_WINDOW",
                                                       self.on_closing_output_window)  # sets window closure protocol
             self.clone_values_to_output_window()  # copies some variables from parent to child
             self.children.output_window_open = True  # sets window open flag to True
         else:  # if another window is already opened
-            self.clone_values_to_output_window()  # updates some variables
+            self.clone_values_to_output_window()  # updates som evariables
             self.children.output_window.root.title(
                 self.variables.name_table)  # re-titles output window to match currently selected table
             self.children.output_window.root.lift()  # brings the window to the top
@@ -372,7 +369,7 @@ class MainWindow(Window):
                                     message=f'Возникла ошибка при экспорте в Excel: {sql_functions.get_err_msg(er)}')
             else:
                 messagebox.showinfo(title='Ошибка', icon='error',
-                                    message='Возникла неизвестная ошибка при экспорте в Excel')
+                                    message='Возникла неизвестная ощибка при экспорте в Excel')
         return
 
 
@@ -380,8 +377,20 @@ class InputWindow(Window):
     """
     An object of this class serves as an input window for the main one
     Widgets in this window are dynamically created from data_format variable of the main window
-    When this window is open, the main one is hidden so that user won't perform any undesirable actions
+    When this window is open, the main one is hidden so that user won't performe any undesirable actions
     """
+
+    class InputWindowVariables:
+        """An instance of this class is used to store some variables for InputWindow class"""
+
+        def __init__(self):
+            self.name_database = None
+            self.name_table = None
+            self.data_format = None
+            self.algorithm = None
+            self.padx = None
+            self.pady = None
+            self.theme = str()
 
     def __init__(self, name_window, *args, **kwargs):
         super().__init__(name_window, *args, **kwargs)
@@ -389,12 +398,11 @@ class InputWindow(Window):
         # self.root.geometry('500x300')
         self.root.resizable(False, False)
 
-        self.variables = InputWindowVariables()  # creates an instance of subclass for variables
+        self.variables = InputWindow.InputWindowVariables()  # creates an instance of sub-class for variables
 
         self.labels = []  # this list holds all Label objects of this window
         self.entries = []  # this list holds all Entry objects of this window
-        self.entry_variables = dict()  # this dictionary is filled when get_values method is called, it is used for
-        # storing values from entries
+        self.entry_variables = dict()  # this dictionary is filled when get_values method is called, it is used for storing values from entries
         self.style = ttk.Style(self.root)
 
         self.get_values_button = ttk.Button(self.root,
@@ -425,8 +433,7 @@ class InputWindow(Window):
 
     def get_values(self):
         """
-        This method gets values from entries, processes them using .variables.algorithm function and sends them to
-        sql table using sql_input function of sql_function module
+        This method gets values from entries, processes them using .variables.algorithm function and sends them to sql table using sql_input function of sql_function module
 
         As sql_input raises sql_function.SqlInputError try-except module uses it to determine if an error
         occured in sql_input or in this function and then an error message is displayed accordingly
@@ -434,7 +441,9 @@ class InputWindow(Window):
         try:
             for index, OBJECT in enumerate(self.entries):
                 self.entry_variables[self.variables.data_format[index][0]] = OBJECT.get()
+            print('vhod')
             self.variables.algorithm(self.entry_variables)
+            print('vihod')
             values = [tuple(map(lambda x: x[1], self.entry_variables.items())), ]
             sql_functions.sql_input(self.variables.name_database,
                                     self.variables.name_table,
@@ -452,28 +461,26 @@ class InputWindow(Window):
                 return -1
 
 
-class InputWindowVariables:
-    """An instance of this class is used to store some variables for InputWindow class"""
-
-    def __init__(self):
-        self.name_database = None
-        self.name_table = None
-        self.data_format = None
-        self.algorithm = None
-        self.padx = None
-        self.pady = None
-        self.theme = str()
-
-
 class OutputWindow(Window):
     """This class defines window that is used to show data from currently selected table"""
+
+    class OutputWindowVariables:
+        """An instance of this class is created by OutputWindow to sore some variables"""
+
+        def __init__(self):
+            self.padx = None
+            self.pady = None
+            self.name_database = None
+            self.name_table = None
+            self.output_text = str()
+            self.theme = str()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.variables = OutputWindowVariables()
-        self.text_field = Label(self.root, text=self.variables.output_text, anchor='nw')
-        self.text_field.pack(padx=self.variables.padx, pady=self.variables.pady)
+        self.variables = OutputWindow.OutputWindowVariables()
+        self.text_field = Label(self.root, text=self.variables.output_text)
+        self.text_field.pack(padx=self.variables.padx, pady=self.variables.pady, anchor='w')
 
         self.update_button = ttk.Button(self.root, text='Получить данные из таблицы', command=self.update_values)
         self.update_button.pack(padx=self.variables.padx, pady=self.variables.pady, side='bottom')
@@ -481,8 +488,7 @@ class OutputWindow(Window):
 
     def update_values(self):
         """
-        This method gets values from table using sql_output function of sql_functions module and sets the text variable
-        to text, generated by formatted_print
+        This method gets values from table using sql_output function of sql_functions module and sets the text variable to text, generated by by formatted_print
 
         As sql_output raises sql_function.SqlOutputError, try-except module uses it to determine if an error
         occured in sql_output or in this function and then an error message is displayed accordingly
@@ -502,18 +508,6 @@ class OutputWindow(Window):
                 messagebox.showinfo(title='Ошибка', icon='error',
                                     message='Возникла неизвестная ошибка при получении данных из  таблицы')
             return
-
-
-class OutputWindowVariables:
-    """An instance of this class is created by OutputWindow to sore some variables"""
-
-    def __init__(self):
-        self.padx = None
-        self.pady = None
-        self.name_database = None
-        self.name_table = None
-        self.output_text = str()
-        self.theme = str()
 
 
 if __name__ == '__main__':
