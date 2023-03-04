@@ -502,7 +502,7 @@ def excel_export_single(database_name: str, table_name: str, file_name: str, whe
 
 def get_columns(database_name: str, table_name: str, password: str = 'root') -> list:
     """
-    This function returns list aff all column names of a table
+    This function returns list off all column names of a table
     :param database_name: determines what database to use
     :param table_name: determines what table to use
     :param password: password
@@ -553,5 +553,4 @@ def formatted_print(rows: tuple) -> str:
 
 
 if __name__ == '__main__':
-    excel_export_single('test', 'table2', r'C:\Programming\Python\VouleVouz\table2.xlsx')
     pass

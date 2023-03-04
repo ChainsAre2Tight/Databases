@@ -27,6 +27,8 @@ class Window:
 
 
 # TODO replace tabulate with pandas.pivot_table
+# TODO make runtime error for data aggregation
+# TODO replace showinfo with showerror
 
 
 # noinspection PyTypeChecker
@@ -369,7 +371,7 @@ class MainWindow(Window):
                                     message=f'Возникла ошибка при экспорте в Excel: {sql_functions.get_err_msg(er)}')
             else:
                 messagebox.showinfo(title='Ошибка', icon='error',
-                                    message='Возникла неизвестная ощибка при экспорте в Excel')
+                                    message='Возникла неизвестная ошибка при экспорте в Excel')
         return
 
 
@@ -377,7 +379,7 @@ class InputWindow(Window):
     """
     An object of this class serves as an input window for the main one
     Widgets in this window are dynamically created from data_format variable of the main window
-    When this window is open, the main one is hidden so that user won't performe any undesirable actions
+    When this window is open, the main one is hidden so that user won't performes any undesirable actions
     """
 
     class InputWindowVariables:
@@ -441,9 +443,7 @@ class InputWindow(Window):
         try:
             for index, OBJECT in enumerate(self.entries):
                 self.entry_variables[self.variables.data_format[index][0]] = OBJECT.get()
-            print('vhod')
             self.variables.algorithm(self.entry_variables)
-            print('vihod')
             values = [tuple(map(lambda x: x[1], self.entry_variables.items())), ]
             sql_functions.sql_input(self.variables.name_database,
                                     self.variables.name_table,
@@ -465,7 +465,7 @@ class OutputWindow(Window):
     """This class defines window that is used to show data from currently selected table"""
 
     class OutputWindowVariables:
-        """An instance of this class is created by OutputWindow to sore some variables"""
+        """An instance of this class is created by OutputWindow to store some variables"""
 
         def __init__(self):
             self.padx = None
