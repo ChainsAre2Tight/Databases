@@ -25,63 +25,63 @@ class Window:
         self.root = Tk()
         self.root.title(name_window)
 
+
 # TODO replace tabulate with pandas.pivot_table
-class MainWindowChildren:
-    """Object of this class stores child objects for an instance of MainWindow"""
-
-    def __init__(self):
-        self.input_window = None  # instance of InputWindow class
-        self.input_window_open = False  # is True when input window is open
-        self.output_window = None  # instance of OutputWindow class
-        self.output_window_open = False  # is True when output window is open
-
-
-class MainWindowVariables:
-    """Object of this class stores variables for an instance of MainWindow"""
-
-    def __init__(self):
-        self.name_preset = str()  # name of currently selected preset
-        self.name_database = str()  # name of currently selected database
-        self.name_table = str()  # name of currently selected table
-        self.data_format = tuple()  # proprietary format for use in sql_function module, see ZadachaTest.py for info
-        self.input_window_name = str()  # name of input window
-        self.padx = 100  # padx for use in tkinter.pack()
-        self.pady = 1  # padx for use in tkinter.pack()
-        self.increment_column_name = 'id'  # determines the first column name, that is AUTO_INCREMENTed
-        self.algorithm = default_function  # stores function, that is used to aggregate each inputed row
-        self.list_of_databases = []  # stores list of all databases used with current preset, see update_comboboxes()
-        self.list_of_tables = []  # stores list of all tables used with current databases, see update_comboboxes()
-        self.theme = 'clam'  # determines theme for widgets
-
-
-class MainWindowWidgets:
-    """Object of this class stores widgets of an instance of MainWindow"""
-
-    def __init__(self):
-        self.dbname_entry_label = None
-        self.dbname_button = None  # button that confirms database selection
-        self.tname_entry_label = None
-        self.tname_button = None  # button that confirms table selection
-        self.create_database_button = None
-        self.create_table_button = None
-        self.open_input_window_button = None
-        self.export_button = None
-        self.button_close_window = None
-        self.button_open_output_window = None
-        self.dbname_entry_combobox = None
-        self.tname_entry_combobox = None
 
 
 # noinspection PyTypeChecker
 class MainWindow(Window):
+    class MainWindowChildren:
+        """Object of this class stores child objects for an instance of MainWindow"""
+
+        def __init__(self):
+            self.input_window = None  # instance of InputWindow class
+            self.input_window_open = False  # is True when input window is open
+            self.output_window = None  # instance of OutputWindow class
+            self.output_window_open = False  # is True when output window is open
+
+    class MainWindowWidgets:
+        """Object of this class stores widgets of an instance of MainWindow"""
+
+        def __init__(self):
+            self.dbname_entry_label = None
+            self.dbname_button = None  # button that confirms database selection
+            self.tname_entry_label = None
+            self.tname_button = None  # button that confirms table selection
+            self.create_database_button = None
+            self.create_table_button = None
+            self.open_input_window_button = None
+            self.export_button = None
+            self.button_close_window = None
+            self.button_open_output_window = None
+            self.dbname_entry_combobox = None
+            self.tname_entry_combobox = None
+
+    class MainWindowVariables:
+        """Object of this class stores variables for an instance of MainWindow"""
+
+        def __init__(self):
+            self.name_preset = str()  # name of currently selected preset
+            self.name_database = str()  # name of currently selected database
+            self.name_table = str()  # name of currently selected table
+            self.data_format = tuple()  # proprietary format for use in sql_function module, see ZadachaTest.py for info
+            self.input_window_name = str()  # name of input window
+            self.padx = 100  # padx for use in tkinter.pack()
+            self.pady = 1  # padx for use in tkinter.pack()
+            self.increment_column_name = 'id'  # determines the first column name, that is AUTO_INCREMENTed
+            self.algorithm = default_function  # stores function, that is used to aggregate each inputed row
+            self.list_of_databases = []  # stores list of all databases used with current preset, see update_comboboxes()
+            self.list_of_tables = []  # stores list of all tables used with current databases, see update_comboboxes()
+            self.theme = 'clam'  # determines theme for widgets
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.root.resizable(False, False)
 
-        self.variables = MainWindowVariables()
-        self.children = MainWindowChildren()
-        self.widgets = MainWindowWidgets()
+        self.variables = MainWindow.MainWindowVariables()
+        self.children = MainWindow.MainWindowChildren()
+        self.widgets = MainWindow.MainWindowWidgets()
 
         self.initialize_widgets()
         self.config = config_reader.DatabaseConfig()
@@ -380,13 +380,25 @@ class InputWindow(Window):
     When this window is open, the main one is hidden so that user won't performe any undesirable actions
     """
 
+    class InputWindowVariables:
+        """An instance of this class is used to store some variables for InputWindow class"""
+
+        def __init__(self):
+            self.name_database = None
+            self.name_table = None
+            self.data_format = None
+            self.algorithm = None
+            self.padx = None
+            self.pady = None
+            self.theme = str()
+
     def __init__(self, name_window, *args, **kwargs):
         super().__init__(name_window, *args, **kwargs)
 
         # self.root.geometry('500x300')
         self.root.resizable(False, False)
 
-        self.variables = InputWindowVariables()  # creates an instance of sub-class for variables
+        self.variables = InputWindow.InputWindowVariables()  # creates an instance of sub-class for variables
 
         self.labels = []  # this list holds all Label objects of this window
         self.entries = []  # this list holds all Entry objects of this window
@@ -429,7 +441,9 @@ class InputWindow(Window):
         try:
             for index, OBJECT in enumerate(self.entries):
                 self.entry_variables[self.variables.data_format[index][0]] = OBJECT.get()
+            print('vhod')
             self.variables.algorithm(self.entry_variables)
+            print('vihod')
             values = [tuple(map(lambda x: x[1], self.entry_variables.items())), ]
             sql_functions.sql_input(self.variables.name_database,
                                     self.variables.name_table,
@@ -447,28 +461,26 @@ class InputWindow(Window):
                 return -1
 
 
-class InputWindowVariables:
-    """An instance of this class is used to store some variables for InputWindow class"""
-
-    def __init__(self):
-        self.name_database = None
-        self.name_table = None
-        self.data_format = None
-        self.algorithm = None
-        self.padx = None
-        self.pady = None
-        self.theme = str()
-
-
 class OutputWindow(Window):
     """This class defines window that is used to show data from currently selected table"""
+
+    class OutputWindowVariables:
+        """An instance of this class is created by OutputWindow to sore some variables"""
+
+        def __init__(self):
+            self.padx = None
+            self.pady = None
+            self.name_database = None
+            self.name_table = None
+            self.output_text = str()
+            self.theme = str()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.variables = OutputWindowVariables()
-        self.text_field = Label(self.root, text=self.variables.output_text, anchor='nw')
-        self.text_field.pack(padx=self.variables.padx, pady=self.variables.pady)
+        self.variables = OutputWindow.OutputWindowVariables()
+        self.text_field = Label(self.root, text=self.variables.output_text)
+        self.text_field.pack(padx=self.variables.padx, pady=self.variables.pady, anchor='w')
 
         self.update_button = ttk.Button(self.root, text='Получить данные из таблицы', command=self.update_values)
         self.update_button.pack(padx=self.variables.padx, pady=self.variables.pady, side='bottom')
@@ -496,18 +508,6 @@ class OutputWindow(Window):
                 messagebox.showinfo(title='Ошибка', icon='error',
                                     message='Возникла неизвестная ошибка при получении данных из  таблицы')
             return
-
-
-class OutputWindowVariables:
-    """An instance of this class is created by OutputWindow to sore some variables"""
-
-    def __init__(self):
-        self.padx = None
-        self.pady = None
-        self.name_database = None
-        self.name_table = None
-        self.output_text = str()
-        self.theme = str()
 
 
 if __name__ == '__main__':
