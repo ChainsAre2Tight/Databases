@@ -25,6 +25,7 @@ class Window:
         self.root = Tk()
         self.root.title(name_window)
 
+
 # TODO replace tabulate with pandas.pivot_table
 class MainWindowChildren:
     """Object of this class stores child objects for an instance of MainWindow"""
@@ -166,13 +167,13 @@ class MainWindow(Window):
         self.variables.name_database = self.widgets.dbname_entry_combobox.get()
         self.update_comboboxes()
         messagebox.showinfo(message=f'''Название базы данных внесено
-(Выбраная база данных: '{self.variables.name_database}')''')
+(Выбранная база данных: '{self.variables.name_database}')''')
         return
 
     def create_database(self):
         """
         This method creates a new database using create_db function of sql_functions module
-        Then it dispalys a pop-up window with a list of all databases on that server
+        Then it displays a pop-up window with a list of all databases on that server
 
         As create_db raises sql_function.DatabaseCreationError, try-except module uses it to determine if an error
         occured in create_db or in this function and then an error message is displayed accordingly
@@ -204,10 +205,10 @@ class MainWindow(Window):
     def create_table(self):
         """
         This method creates a new table using simple_create_table function of sql_functions module
-        Then it dispalys a pop-up window with a list of all tables within that database
+        Then it displays a pop-up window with a list of all tables within that database
 
-        As simple_create_table raises sql_function.TableCreationError, try-except module uses it to determine if an error
-        occured in create_db or in this function and then an error message is displayed accordingly
+        As simple_create_table raises sql_function.TableCreationError, try-except module uses it to determine if an
+        error occured in create_db or in this function and then an error message is displayed accordingly
         """
         try:
             sql_functions.simple_create_table(self.variables.name_database,
@@ -232,7 +233,8 @@ class MainWindow(Window):
 
     def add_to_config(self):
         """
-        This method adds to config currently selected relationship preset-database-table using .write method of Database_config class of config_reader module
+        This method adds to config currently selected relationship preset-database-table using .write method of
+        Database_config class of config_reader module
         Than it displays a pop-up window displaying either a warning or a success message
         """
         answer = messagebox.askokcancel("Сохранить", "Вы хотите сохранить текущую конфигурацию?")
@@ -253,7 +255,8 @@ class MainWindow(Window):
 
     def remove_from_config(self):
         """
-        This method removes currently selected relationship preset-database-table from config using .delete method of Database_config class of config_reader module
+        This method removes currently selected relationship preset-database-table from config using .delete method of
+        Database_config class of config_reader module
         Than it displays a pop-up window displaying either a warning or a success message
         """
         answer = messagebox.askokcancel("Сохранить", "Вы хотите удалить текущую конфигурацию?")
@@ -289,7 +292,7 @@ class MainWindow(Window):
         """Defines actions that are performed when input window is closed"""
         self.children.input_window_open = False  # sets flag to False
         self.children.input_window.root.destroy()  # destroys window
-        self.children.input_window = None  # destoys object
+        self.children.input_window = None  # destroys object
         self.root.deiconify()  # unhides the main window
         return
 
@@ -297,13 +300,13 @@ class MainWindow(Window):
         """Defines a series of actions that are performed when an output window must be opened"""
         if not self.children.output_window_open:  # checks if another output window is opened
             self.children.output_window = OutputWindow(
-                self.variables.name_table)  # creates an instance of OuptupWindow class
+                self.variables.name_table)  # creates an instance of OutputWindow class
             self.children.output_window.root.protocol("WM_DELETE_WINDOW",
                                                       self.on_closing_output_window)  # sets window closure protocol
             self.clone_values_to_output_window()  # copies some variables from parent to child
             self.children.output_window_open = True  # sets window open flag to True
         else:  # if another window is already opened
-            self.clone_values_to_output_window()  # updates som evariables
+            self.clone_values_to_output_window()  # updates some variables
             self.children.output_window.root.title(
                 self.variables.name_table)  # re-titles output window to match currently selected table
             self.children.output_window.root.lift()  # brings the window to the top
@@ -369,7 +372,7 @@ class MainWindow(Window):
                                     message=f'Возникла ошибка при экспорте в Excel: {sql_functions.get_err_msg(er)}')
             else:
                 messagebox.showinfo(title='Ошибка', icon='error',
-                                    message='Возникла неизвестная ощибка при экспорте в Excel')
+                                    message='Возникла неизвестная ошибка при экспорте в Excel')
         return
 
 
@@ -377,7 +380,7 @@ class InputWindow(Window):
     """
     An object of this class serves as an input window for the main one
     Widgets in this window are dynamically created from data_format variable of the main window
-    When this window is open, the main one is hidden so that user won't performe any undesirable actions
+    When this window is open, the main one is hidden so that user won't perform any undesirable actions
     """
 
     def __init__(self, name_window, *args, **kwargs):
@@ -386,11 +389,12 @@ class InputWindow(Window):
         # self.root.geometry('500x300')
         self.root.resizable(False, False)
 
-        self.variables = InputWindowVariables()  # creates an instance of sub-class for variables
+        self.variables = InputWindowVariables()  # creates an instance of subclass for variables
 
         self.labels = []  # this list holds all Label objects of this window
         self.entries = []  # this list holds all Entry objects of this window
-        self.entry_variables = dict()  # this dictionary is filled when get_values method is called, it is used for storing values from entries
+        self.entry_variables = dict()  # this dictionary is filled when get_values method is called, it is used for
+        # storing values from entries
         self.style = ttk.Style(self.root)
 
         self.get_values_button = ttk.Button(self.root,
@@ -421,7 +425,8 @@ class InputWindow(Window):
 
     def get_values(self):
         """
-        This method gets values from entries, processes them using .variables.algorithm function and sends them to sql table using sql_input function of sql_function module
+        This method gets values from entries, processes them using .variables.algorithm function and sends them to
+        sql table using sql_input function of sql_function module
 
         As sql_input raises sql_function.SqlInputError try-except module uses it to determine if an error
         occured in sql_input or in this function and then an error message is displayed accordingly
@@ -476,7 +481,8 @@ class OutputWindow(Window):
 
     def update_values(self):
         """
-        This method gets values from table using sql_output function of sql_functions module and sets the text variable to text, generated by by formatted_print
+        This method gets values from table using sql_output function of sql_functions module and sets the text variable
+        to text, generated by formatted_print
 
         As sql_output raises sql_function.SqlOutputError, try-except module uses it to determine if an error
         occured in sql_output or in this function and then an error message is displayed accordingly
