@@ -5,7 +5,7 @@ def algorith(row):
         for k in range(len(a)):
             if (lambda x: x % 2 == 0)(a[k]):
                 mas_even.append(k)
-        row['Indexes'] = mas_even
+        row['Indexes'] = str(mas_even)
     except (ValueError, RuntimeError):
         row['Massive'] = 'Bad input'
         row['Indexes'] = 'No result'
