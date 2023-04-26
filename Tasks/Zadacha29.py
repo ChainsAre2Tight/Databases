@@ -1,17 +1,3 @@
-from queue import LifoQueue
-'''29 задача через список надо,
-30 задача через коллекцию
-'''
-
-def algorith(row):
-    stack = LifoQueue(maxsize=500)
-    list1 = list(map(int, row['Stacks'].split(' ')))
-    for value in list1:
-        stack.put(value)
-    row['Stacks'] = str(list1)
-    return row
-
-
 class Stack:
     def __init__(self):
         self.stack = []
@@ -43,6 +29,15 @@ class Stack:
         self.stack.append(item)
         if len(self.stack) == 1 or item > self.__max:
             self.__max = item
+
+
+def algorith(row):
+    stack1 = Stack()
+    list1 = list(map(int, row['Stacks'].split(' ')))
+    for value in list1:
+        stack1.push(value)
+    row['Stacks'] = str(list1)
+    return row
 
 
 def set_variables(current_window):
