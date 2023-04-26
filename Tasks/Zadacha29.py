@@ -1,5 +1,7 @@
 from queue import LifoQueue
-
+'''29 задача через список надо,
+30 задача через коллекцию
+'''
 
 def algorith(row):
     stack = LifoQueue(maxsize=500)
