@@ -7,10 +7,12 @@ def algorith(row):
     list2 = []
     for value in list1:
         stack.put(value)
-    row['Stacks'] = str(list1)
-    for k in range(3):
+    resstack = str(list1)
+    row['Stacks'] = resstack
+    for k in range(3): #Должно быть 100, но чтобы прога не ломалась пока 3
         list2.append(stack.get())
-    row['Removed_items'] = str(list2)
+    itstr = str(list2)
+    row['Removed_items'] = itstr
     return row
 
 
