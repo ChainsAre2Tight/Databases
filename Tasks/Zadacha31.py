@@ -1,3 +1,6 @@
+import tkinter
+
+
 class Stack:
     def __init__(self):
         self.stack = []
@@ -31,16 +34,39 @@ class Stack:
             self.__max = item
 
 
+def window1(x):
+    root = tkinter.Tk()
+    root.geometry("300x200")
+
+    def on_closing():
+        root.destroy()
+
+    root.title("Вывод результата задачи")
+    label = tkinter.Label(root, text=x)
+    label.pack()
+    exit_button = tkinter.Button(root, text="Exit", command=on_closing)
+    exit_button.pack(pady=20)
+
+
 def algorith(row):
     stack1 = Stack()
-    list1 = list(map(int, row['Stacks'].split(' ')))
+    list1 = list(map(str, row['Stacks'].split(' ')))
     list2 = []
-    for value in list1:
-        stack1.push(value)
-    row['Stacks'] = str(list1)
-    for k in range(3):
-        list2.append(stack1.pop())
-    row['Removed_items'] = str(list2)
+    if len(list1) > 1:
+        for value in list1:
+            stack1.push(value)
+        resstack = str(list1)
+        row['Stacks'] = resstack
+        for k in range(3):
+            list2.append(stack1.pop())
+        itstr = str(list2)
+        row['Removed_items'] = itstr
+
+        window1(itstr)
+    else:
+        window1('Результата нет')
+        row["Stacks"] = 'Пустой ввод'
+        row['Removed_items'] = 'Результата нет'
     return row
 
 
